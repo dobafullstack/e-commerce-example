@@ -1,9 +1,20 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
-  "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
-  "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
-  }
+	"moduleFileExtensions": ["js", "json", "ts"],
+	"rootDir": ".",
+	"testEnvironment": "node",
+	"testRegex": ".e2e-spec.ts$",
+	"transform": {
+		"^.+\\.(t|j)s$": "ts-jest"
+	},
+	"moduleNameMapper": {
+		"^app/(.*)$": "<rootDir>../src/app/$1",
+		"^configs/(.*)$": "<rootDir>../src/configs/$1",
+		"^database/(.*)$": "<rootDir>../src/database/$1",
+		"^exceptions/(.*)$": "<rootDir>../src/exceptions/$1",
+		"^helpers/(.*)$": "<rootDir>../src/helpers/$1",
+		"^middlewares/(.*)$": "<rootDir>../src/middlewares/$1",
+		"^swaggers/(.*)$": "<rootDir>../src/swaggers/$1",
+		"^interceptors/(.*)$": "<rootDir>../src/interceptors/$1",
+		"^types/(.*)$": "<rootDir>../src/types/$1"
+	}
 }

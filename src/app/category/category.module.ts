@@ -5,6 +5,7 @@ import { CategorySubService } from './services/category-sub.service';
 
 @Module({
 	controllers: [CategoryController],
-	providers: [CategoryService, CategorySubService]
+	providers: [CategoryService, CategorySubService],
+	exports: [CategorySubService]
 })
 export class CategoryModule {}

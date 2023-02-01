@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { IEntity } from 'types/IEntity';
 import { CategorySub } from './category-sub.entity';
 
-@Entity({ name: 'category' })
+@Entity({ name: 'categories' })
 export class Category extends IEntity {
 	@Column()
 	name!: string;

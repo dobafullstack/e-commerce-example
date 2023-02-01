@@ -1,11 +1,8 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
 	IsEmail,
-	IsNumberString,
-	IsOptional,
-	IsString,
-	ValidateIf
+	IsNumberString, IsString
 } from 'class-validator';
+import { IsNullable } from 'validations/is-nullable.validation';
 
 export class RegisterDto {
 	@IsString()
@@ -17,13 +14,11 @@ export class RegisterDto {
 	@IsString()
 	password!: string;
 
-	@IsOptional()
-	@ValidateIf((_, value) => value !== undefined)
+	@IsNullable()
 	@IsString()
 	name?: string;
 
-	@IsOptional()
-	@ValidateIf((_, value) => value !== undefined)
+	@IsNullable()
 	@IsNumberString()
 	phone?: string;
 }

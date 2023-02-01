@@ -14,11 +14,11 @@ export const applyGlobalMiddleware = (app: INestApplication) => {
 		throw new BadRequestException(
 			errors.map((err) => {
 				const field = err.property;
-				const message = Object.values(err.constraints!)[0];
-
+				const message = Object.values(err.constraints!);
+				
 				return {
 					field,
-					message
+					message: message.length === 1 ? message[0] : message
 				};
 			})
 		);

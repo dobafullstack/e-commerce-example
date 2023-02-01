@@ -1,18 +1,16 @@
-import { IsNumberString, IsOptional, IsString, ValidateIf } from "class-validator";
+import { IsNumberString, IsString } from "class-validator";
+import { IsNullable } from "validations/is-nullable.validation";
 
 export class GetListCategoryQueryDto {
-    @IsOptional()
-    @ValidateIf((_, value) => value !== undefined)
+    @IsNullable()
     @IsNumberString()
     page?: string;
 
-    @IsOptional()
-    @ValidateIf((_, value) => value !== undefined)
+    @IsNullable()
     @IsNumberString()
     limit?: string;
 
-    @IsOptional()
-    @ValidateIf((_, value) => value !== undefined)
+    @IsNullable()
     @IsString()
     relation?: string;
 }

@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { IEntity } from 'types/IEntity';
 import { Category } from './category.entity';
 
-@Entity({ name: 'category_sub' })
+@Entity({ name: 'categories_sub' })
 export class CategorySub extends IEntity {
 	@Column()
 	name!: string;

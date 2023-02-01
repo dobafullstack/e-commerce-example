@@ -93,12 +93,21 @@ export class CategorySubService {
 		where?:
 			| FindOptionsWhere<CategorySub>
 			| FindOptionsWhere<CategorySub>[]
-			| undefined
+			| undefined,
+		manager?: EntityManager
 	) {
 		try {
-			const category = await CategorySub.findOneOrFail({
-				where
-			});
+			let category;
+
+			if (manager) {
+				category = await manager.findOneOrFail(CategorySub, {
+					where
+				});
+			} else {
+				category = await CategorySub.findOneOrFail({
+					where
+				});
+			}
 
 			return category;
 		} catch (error) {

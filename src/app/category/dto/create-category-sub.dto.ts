@@ -1,15 +1,13 @@
 import {
-    IsOptional,
-    IsString,
-    ValidateIf
+	IsString
 } from 'class-validator';
+import { IsNullable } from 'validations/is-nullable.validation';
 
 export class CreateCategorySubDto {
 	@IsString()
 	name!: string;
 
-	@IsOptional()
-	@ValidateIf((_, value) => value !== undefined)
+	@IsNullable()
 	@IsString()
 	thumbnail?: string;
 }

@@ -15,6 +15,7 @@
 		"^middlewares/(.*)$": "<rootDir>../src/middlewares/$1",
 		"^swaggers/(.*)$": "<rootDir>../src/swaggers/$1",
 		"^interceptors/(.*)$": "<rootDir>../src/interceptors/$1",
+		"^validations/(.*)$": "<rootDir>../src/validations/$1",
 		"^types/(.*)$": "<rootDir>../src/types/$1"
 	}
 }

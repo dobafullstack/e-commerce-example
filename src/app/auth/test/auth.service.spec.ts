@@ -2,7 +2,11 @@ require('dotenv').config({
 	path: `.env.${process.env.NODE_ENV}`
 });
 
-import { ConflictException, UnauthorizedException } from '@nestjs/common';
+import {
+	ConflictException,
+	NotFoundException,
+	UnauthorizedException
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginDto } from '../dtos/login.dto';
 import { RegisterDto } from '../dtos/register.dto';
@@ -10,7 +14,6 @@ import { User } from '../entities/user.entity';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import * as argon2 from 'argon2';
-import { NoContentException } from 'exceptions/no-content.exception';
 
 describe('AuthService', () => {
 	let service: AuthService;
@@ -43,7 +46,9 @@ describe('AuthService', () => {
 		fakeUserService = {
 			create: () => Promise.resolve(user),
 			findOne: () => Promise.resolve(user),
-			findOneOrFail: () => Promise.resolve(user)
+			findOneOrFail: () => Promise.resolve(user),
+			find: () => Promise.resolve([]),
+			remove: () => Promise.resolve([])
 		};
 
 		const module: TestingModule = await Test.createTestingModule({
@@ -82,10 +87,10 @@ describe('AuthService', () => {
 	describe('login', () => {
 		it('should throw no content exception when user not be found', async () => {
 			fakeUserService.findOneOrFail = () =>
-				Promise.reject(new NoContentException([]));
+				Promise.reject(new NotFoundException([]));
 
 			await expect(service.login(loginInput)).rejects.toThrow(
-				NoContentException
+				NotFoundException
 			);
 		});
 

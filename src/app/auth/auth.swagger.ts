@@ -2,6 +2,7 @@ import { applyDecorators } from '@nestjs/common';
 import {
 	ApiCreatedResponse,
 	ApiOkResponse,
+	ApiOperation,
 	getSchemaPath
 } from '@nestjs/swagger';
 import { ApiBadRequest, ApiConflict, ApiNotFound } from 'swaggers/swagger';
@@ -9,6 +10,7 @@ import { User } from './entities/user.entity';
 
 export const ApiRegister = () =>
 	applyDecorators(
+		ApiOperation({ summary: 'Register new user' }),
 		ApiBadRequest(),
 		ApiConflict(),
 		ApiCreatedResponse({
@@ -26,6 +28,7 @@ export const ApiRegister = () =>
 
 export const ApiLogin = () =>
 	applyDecorators(
+		ApiOperation({ summary: 'Login by client account' }),
 		ApiBadRequest(),
 		ApiNotFound(),
 		ApiOkResponse({

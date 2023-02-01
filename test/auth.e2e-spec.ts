@@ -47,7 +47,12 @@ describe('AuthController (e2e)', () => {
 							email,
 							password
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('username');
+						});
 				});
 
 				it('should throw bad request exception when username is not string', () => {
@@ -58,7 +63,12 @@ describe('AuthController (e2e)', () => {
 							email,
 							password
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('username');
+						});
 				});
 			});
 
@@ -70,7 +80,12 @@ describe('AuthController (e2e)', () => {
 							username,
 							email
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('password');
+						});
 				});
 
 				it('should throw bad request exception when password is not string', () => {
@@ -81,7 +96,12 @@ describe('AuthController (e2e)', () => {
 							email,
 							password: 123213123123
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('password');
+						});
 				});
 			});
 
@@ -93,7 +113,12 @@ describe('AuthController (e2e)', () => {
 							username,
 							password
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('email');
+						});
 				});
 
 				it('should throw bad request exception when email is invalid', () => {
@@ -104,7 +129,12 @@ describe('AuthController (e2e)', () => {
 							password,
 							email: 'email'
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('email');
+						});
 				});
 			});
 
@@ -118,7 +148,12 @@ describe('AuthController (e2e)', () => {
 							email,
 							name: 123123123
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('name');
+						});
 				});
 			});
 
@@ -132,7 +167,12 @@ describe('AuthController (e2e)', () => {
 							email,
 							phone: 123132132132
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('phone');
+						});
 				});
 
 				it('should throw bad request exception when phone is invalid', () => {
@@ -144,7 +184,12 @@ describe('AuthController (e2e)', () => {
 							email,
 							phone: 'test'
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('phone');
+						});
 				});
 			});
 		});
@@ -185,7 +230,12 @@ describe('AuthController (e2e)', () => {
 						.send({
 							password
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('username');
+						});
 				});
 
 				it('should throw bad request exception when username is not string', () => {
@@ -195,7 +245,12 @@ describe('AuthController (e2e)', () => {
 							username: 123123132,
 							password
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('username');
+						});
 				});
 			});
 
@@ -206,7 +261,12 @@ describe('AuthController (e2e)', () => {
 						.send({
 							username
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('password');
+						});
 				});
 
 				it('should throw bad request exception when password is not string', () => {
@@ -216,7 +276,12 @@ describe('AuthController (e2e)', () => {
 							username,
 							password: 123213123123
 						})
-						.expect(400);
+						.expect(400)
+						.then((res) => {
+							const { errors } = res.body;
+
+							expect(errors[0].field).toEqual('password');
+						});
 				});
 			});
 		});

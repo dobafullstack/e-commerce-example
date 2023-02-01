@@ -11,11 +11,9 @@ import { Exclude } from 'class-transformer';
 @Entity({ name: 'user' })
 export class User extends IEntity {
 	@Column()
-	@ApiProperty({ example: 'username' })
 	username!: string;
 
 	@Column()
-	@ApiProperty({ example: 'email@gmail.com' })
 	email!: string;
 
 	@Column()
@@ -23,11 +21,9 @@ export class User extends IEntity {
 	password!: string;
 
 	@Column({ nullable: true })
-	@ApiPropertyOptional({ example: 'name' })
 	name?: string;
 
 	@Column({ nullable: true })
-	@ApiPropertyOptional({ example: 'phone' })
 	phone?: string;
 
 	@BeforeInsert()

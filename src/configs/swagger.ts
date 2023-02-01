@@ -1,5 +1,6 @@
 export const SWAGGER = {
 	TAGS: {
-		AUTH: 'auth'
+		AUTH: 'Auth',
+		CATEGORY: 'Category'
 	}
 };

@@ -23,6 +23,7 @@ describe('CategoryService', () => {
 
 	beforeEach(async () => {
 		fakeCategorySubService = {
+			find: () => Promise.resolve([]),
 			create: () => Promise.resolve(categorySub),
 			createMany: () => Promise.resolve([]),
 			findOne: () => Promise.resolve(categorySub),
@@ -141,7 +142,7 @@ describe('CategoryService', () => {
 		it('should throw not found exception when category not be found', async () => {
 			service.findOneOrFail = () => Promise.reject(new NotFoundException());
 
-			await expect(service.remove(id)).rejects.toThrow(NotFoundException);
+			await expect(service.removeById(id)).rejects.toThrow(NotFoundException);
 		});
 	});
 });

@@ -5,6 +5,7 @@ import {
 	getSchemaPath
 } from '@nestjs/swagger';
 import { ApiConflict, ApiNotFound } from 'swaggers/response.swagger';
+import { Pagination } from 'types/Pagination';
 import { ProductImage } from './entities/product-image.entity';
 import { ProductStock } from './entities/product-stock.entity';
 import { Product } from './entities/product.entity';
@@ -12,6 +13,7 @@ import { Product } from './entities/product.entity';
 export const ApiCreateProduct = () =>
 	applyDecorators(
 		ApiConflict(),
+		ApiNotFound(),
 		ApiCreatedResponse({
 			schema: {
 				properties: {
@@ -30,7 +32,7 @@ export const ApiGetListProduct = () =>
 		ApiOkResponse({
 			schema: {
 				properties: {
-					code: { example: 201 },
+					code: { example: 200 },
 					success: { example: true },
 					message: { example: 'SUCCESS' },
 					errors: { example: [] },
@@ -39,7 +41,8 @@ export const ApiGetListProduct = () =>
 						items: {
 							$ref: getSchemaPath(Product)
 						}
-					}
+					},
+					pagination: { $ref: getSchemaPath(Pagination) }
 				}
 			}
 		})
@@ -51,7 +54,7 @@ export const ApiGetDetailProduct = () =>
 		ApiOkResponse({
 			schema: {
 				properties: {
-					code: { example: 201 },
+					code: { example: 200 },
 					success: { example: true },
 					message: { example: 'SUCCESS' },
 					errors: { example: [] },
@@ -63,13 +66,45 @@ export const ApiGetDetailProduct = () =>
 		})
 	);
 
-export const ApiUpdateProduct = () => applyDecorators();
+export const ApiUpdateProduct = () =>
+	applyDecorators(
+		ApiNotFound(),
+		ApiConflict(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: {
+						$ref: getSchemaPath(Product)
+					}
+				}
+			}
+		})
+	);
 
-export const ApiRemoveProduct = () => applyDecorators();
+export const ApiRemoveProduct = () =>
+	applyDecorators(
+		ApiNotFound(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: {
+						$ref: getSchemaPath(Product)
+					}
+				}
+			}
+		})
+	);
 
 export const ApiCreateProductImage = () =>
 	applyDecorators(
-		ApiConflict(),
 		ApiCreatedResponse({
 			schema: {
 				properties: {
@@ -83,13 +118,40 @@ export const ApiCreateProductImage = () =>
 		})
 	);
 
-export const ApiUpdateProductImage = () => applyDecorators();
+export const ApiUpdateProductImage = () =>
+	applyDecorators(
+		ApiNotFound(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(ProductImage) }
+				}
+			}
+		})
+	);
 
-export const ApiRemoveProductImage = () => applyDecorators();
+export const ApiRemoveProductImage = () =>
+	applyDecorators(
+		ApiNotFound(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(ProductImage) }
+				}
+			}
+		})
+	);
 
 export const ApiCreateProductStock = () =>
 	applyDecorators(
-		ApiConflict(),
 		ApiCreatedResponse({
 			schema: {
 				properties: {
@@ -103,10 +165,64 @@ export const ApiCreateProductStock = () =>
 		})
 	);
 
-export const ApiUpdateProductStock = () => applyDecorators();
+export const ApiUpdateProductStock = () =>
+	applyDecorators(
+		ApiNotFound(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(ProductStock) }
+				}
+			}
+		})
+	);
 
-export const ApiRemoveProductStock = () => applyDecorators();
+export const ApiRemoveProductStock = () =>
+	applyDecorators(
+		ApiNotFound(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(ProductStock) }
+				}
+			}
+		})
+	);
 
-export const ApiCreateProductCategory = () => applyDecorators();
+export const ApiCreateProductCategory = () => applyDecorators(
+	ApiNotFound(),
+	ApiOkResponse({
+		schema: {
+			properties: {
+				code: { example: 200 },
+				success: { example: true },
+				message: { example: 'SUCCESS' },
+				errors: { example: [] },
+				data: { $ref: getSchemaPath(Product) }
+			}
+		}
+	})
+);
 
-export const ApiRemoveProductCategory = () => applyDecorators();
+export const ApiRemoveProductCategory = () => applyDecorators(
+	ApiNotFound(),
+	ApiOkResponse({
+		schema: {
+			properties: {
+				code: { example: 200 },
+				success: { example: true },
+				message: { example: 'SUCCESS' },
+				errors: { example: [] },
+				data: { $ref: getSchemaPath(Product) }
+			}
+		}
+	})
+);

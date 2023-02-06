@@ -79,7 +79,7 @@ export class ProductService {
 			});
 		});
 
-		return this.findOne({ name });
+		return this.findOneOrFail({ name });
 	}
 
 	findAll(

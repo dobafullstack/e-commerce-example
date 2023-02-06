@@ -31,7 +31,7 @@ export class ResponseTransferInterceptor implements NestInterceptor {
 						pagination: {
 							page: +page,
 							limit: +limit,
-							totalPage: Math.ceil(count / +limit)
+							total_page: Math.ceil(count / +limit)
 						}
 					};
 				}

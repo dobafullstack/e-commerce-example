@@ -10,6 +10,7 @@ import {
 
 export class IEntity extends BaseEntity {
 	@PrimaryGeneratedColumn()
+	@ApiProperty({ example: 0 })
 	id!: number;
 
 	@CreateDateColumn()

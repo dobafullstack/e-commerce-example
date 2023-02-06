@@ -1,3 +1,4 @@
+import { ApiHideProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { IEntity } from 'types/IEntity';
@@ -13,9 +14,11 @@ export class CategorySub extends IEntity {
 
 	@Column()
 	@Exclude()
+	@ApiHideProperty()
 	category_id!: number;
 
 	@ManyToOne(() => Category, (cate) => cate.subs)
 	@JoinColumn({ name: 'category_id' })
+	@ApiHideProperty()
 	category!: Category;
 }

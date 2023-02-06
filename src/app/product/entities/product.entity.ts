@@ -1,4 +1,6 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { CategorySub } from 'app/category/entities/category-sub.entity';
+import { Transform } from 'class-transformer';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { IEntity } from 'types/IEntity';
 import { ProductImage } from './product-image.entity';
@@ -22,6 +24,8 @@ export class Product extends IEntity {
 	thumbnail!: string;
 
 	@OneToMany(() => ProductImage, (image) => image.product)
+	@Transform(({ value }) => value.map((item) => item.url))
+	@ApiProperty({ example: ['string'] })
 	images!: ProductImage[];
 
 	@OneToMany(() => ProductStock, (stock) => stock.product)

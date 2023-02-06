@@ -6,6 +6,7 @@ import { Category } from 'app/category/entities/category.entity';
 import { ProductImage } from 'app/product/entities/product-image.entity';
 import { ProductStock } from 'app/product/entities/product-stock.entity';
 import { Product } from 'app/product/entities/product.entity';
+import { Pagination } from 'types/Pagination';
 
 export * from './response.swagger';
 
@@ -24,7 +25,8 @@ export const swagger = (app: INestApplication) => {
 			CategorySub,
 			Product,
 			ProductImage,
-			ProductStock
+			ProductStock,
+			Pagination
 		]
 	});
 

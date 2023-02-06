@@ -1,3 +1,5 @@
+import { User } from "app/auth/entities/user.entity";
+
 declare global {
 	namespace NodeJS {
 		interface ProcessEnv {
@@ -9,6 +11,11 @@ declare global {
 			TYPEORM_PASSWORD: string;
 			TYPEORM_DATABASE_NAME: string;
 			SECRET_JWT: string;
+		}
+	}
+	namespace Express {
+		export interface Request {
+			user?: User
 		}
 	}
 }

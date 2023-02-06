@@ -4,20 +4,24 @@ import {
 	NotFoundException
 } from '@nestjs/common';
 import { FindOptionsWhere } from 'typeorm';
+import { Roles } from 'types/Roles';
 import { RegisterDto } from '../dtos/register.dto';
 import { User } from '../entities/user.entity';
+import { RoleService } from './role.service';
 
 @Injectable()
 export class UserService {
+	constructor(private readonly roleService: RoleService) {}
+
 	find(where?: FindOptionsWhere<User> | FindOptionsWhere<User>[] | undefined) {
-		return User.find({ where });
+		return User.find({ where, relations: ["roles"] });
 	}
 
 	async findOne(
 		where?: FindOptionsWhere<User> | FindOptionsWhere<User>[] | undefined,
 		unique: boolean = false
 	) {
-		const user = await User.findOne({ where });
+		const user = await User.findOne({ where, relations: ["roles"] });
 
 		if (unique && user) {
 			throw new ConflictException([
@@ -35,7 +39,7 @@ export class UserService {
 		where?: FindOptionsWhere<User> | FindOptionsWhere<User>[] | undefined
 	) {
 		try {
-			const user = await User.findOneOrFail({ where });
+			const user = await User.findOneOrFail({ where, relations: ["roles"] });
 
 			return user;
 		} catch (error) {
@@ -48,9 +52,12 @@ export class UserService {
 		}
 	}
 
-	create(input: RegisterDto) {
+	async create(input: RegisterDto) {
+		const role = await this.roleService.findOneOrFail({ name: Roles.CLIENT });
+
 		return User.create({
-			...input
+			...input,
+			roles: [role]
 		}).save();
 	}
 

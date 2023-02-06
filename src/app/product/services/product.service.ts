@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+	ConflictException,
+	Injectable,
+	NotFoundException
+} from '@nestjs/common';
 import { CategorySubService } from 'app/category/services/category-sub.service';
 import { FindOptionsWhere } from 'typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
@@ -11,6 +15,7 @@ import { ProductImage } from '../entities/product-image.entity';
 import { ProductStock } from '../entities/product-stock.entity';
 import { CategorySub } from 'app/category/entities/category-sub.entity';
 import { GetListProductQueryDto } from '../dto/get-list-product-query.dto';
+import { ProductCategoryDto } from '../dto/add-product-category.dto';
 
 @Injectable()
 export class ProductService {
@@ -119,11 +124,68 @@ export class ProductService {
 		return product;
 	}
 
-	update(id: number, input: UpdateProductDto) {
-		return `This action updates a #${id} product`;
+	async findOneOrFail(
+		where?: FindOptionsWhere<Product> | FindOptionsWhere<Product>[]
+	) {
+		try {
+			const product = await Product.findOneOrFail({
+				where,
+				relations: ['images', 'stocks', 'categories']
+			});
+
+			return product;
+		} catch (error) {
+			throw new NotFoundException([
+				{
+					field: 'product',
+					message: 'Product not be found'
+				}
+			]);
+		}
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} product`;
+	async update(id: number, input: UpdateProductDto) {
+		const { name, sku, price, description, thumbnail } = input;
+
+		await this.findOneOrFail({ id });
+
+		await this.findOne({ name }, true);
+
+		await Product.update({ id }, { name, sku, price, description, thumbnail });
+
+		return this.findOneOrFail({ id });
+	}
+
+	async remove(id: number) {
+		const product = await this.findOneOrFail({ id });
+
+		return Product.softRemove(product);
+	}
+
+	async addCategory(input: ProductCategoryDto) {
+		const { product_id, category_id } = input;
+		const product = await this.findOneOrFail({ id: product_id });
+		const category = await this.categorySubService.findOneOrFail({
+			id: category_id
+		});
+
+		product.categories = product.categories.concat(category);
+
+		await dataSource.manager.save(product);
+
+		return this.findOneOrFail({ id: product_id });
+	}
+
+	async removeCategory(input: ProductCategoryDto) {
+		const { product_id, category_id } = input;
+		const product = await this.findOneOrFail({ id: product_id });
+
+		product.categories = product.categories.filter(
+			(item) => item.id !== category_id
+		);
+
+		await dataSource.manager.save(product);
+
+		return this.findOneOrFail({ id: product_id });
 	}
 }

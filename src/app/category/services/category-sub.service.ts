@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { EntityManager, FindOptionsWhere } from 'typeorm';
 import { CreateCategorySubDto } from '../dto/create-category-sub.dto';
+import { UpdateCategorySubDto } from '../dto/update-category-sub.dto';
 import { CategorySub } from '../entities/category-sub.entity';
 
 @Injectable()
@@ -120,11 +121,29 @@ export class CategorySubService {
 		}
 	}
 
+	async update(id: number, input: UpdateCategorySubDto) {
+		const { name } = input;
+
+		await this.findOneOrFail({ id });
+
+		await this.findOne({ name }, true);
+
+		await CategorySub.update({ id }, { ...input });
+
+		return this.findOneOrFail({ id });
+	}
+
 	remove(subs: CategorySub[], manager?: EntityManager) {
 		if (manager) {
 			return manager.softRemove(subs);
 		}
 
 		return CategorySub.softRemove(subs);
+	}
+
+	async removeById(id: number) {
+		const cate = await this.findOneOrFail({ id });
+
+		return CategorySub.softRemove(cate);
 	}
 }

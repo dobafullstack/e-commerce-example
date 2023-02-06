@@ -11,6 +11,7 @@ import {
 	ApiConflict,
 	ApiNotFound
 } from 'swaggers/response.swagger';
+import { CategorySub } from './entities/category-sub.entity';
 import { Category } from './entities/category.entity';
 
 export const ApiCreateCategory = () =>
@@ -25,6 +26,25 @@ export const ApiCreateCategory = () =>
 					message: { example: 'SUCCESS' },
 					errors: { example: [] },
 					data: { $ref: getSchemaPath(Category) }
+				}
+			}
+		}),
+		ApiConflict(),
+		ApiBadRequest()
+	);
+
+export const ApiCreateCategorySub = () =>
+	applyDecorators(
+		ApiOperation({ summary: 'Create a new category sub' }),
+		ApiBearerAuth(),
+		ApiCreatedResponse({
+			schema: {
+				properties: {
+					code: { example: 201 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(CategorySub) }
 				}
 			}
 		}),
@@ -96,6 +116,43 @@ export const ApiRemoveCategory = () =>
 					message: { example: 'SUCCESS' },
 					errors: { example: [] },
 					data: { $ref: getSchemaPath(Category) }
+				}
+			}
+		}),
+		ApiNotFound()
+	);
+
+export const ApiUpdateCategorySub = () =>
+	applyDecorators(
+		ApiOperation({ summary: 'Update an category sub' }),
+		ApiBearerAuth(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(CategorySub) }
+				}
+			}
+		}),
+		ApiNotFound(),
+		ApiConflict()
+	);
+
+export const ApiRemoveCategorySub = () =>
+	applyDecorators(
+		ApiOperation({ summary: 'Remove a category sub' }),
+		ApiBearerAuth(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(CategorySub) }
 				}
 			}
 		}),

@@ -1,6 +1,5 @@
 import { IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { ValidateNested } from 'validations/is-non-primitive-array.validation';
-import { IsNullable } from 'validations/is-nullable.validation';
 import { IsNumberArray } from 'validations/is-number-array.validation';
 import { CreateProductImageDto } from './create-product-image.dto';
 import { CreateProductStockDto } from './create-product-stock.dto';

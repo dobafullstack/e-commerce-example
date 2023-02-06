@@ -8,6 +8,7 @@ import { ProductStockService } from './services/product-stock.service';
 @Module({
 	controllers: [ProductController],
 	providers: [ProductService, ProductImageService, ProductStockService],
-	imports: [CategoryModule]
+	imports: [CategoryModule],
+	exports: [ProductService, ProductStockService]
 })
 export class ProductModule {}

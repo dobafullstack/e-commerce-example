@@ -1,20 +1,19 @@
 import {
+	Body,
+	ClassSerializerInterceptor,
 	Controller,
 	Get,
-	Post,
-	Body,
-	Patch,
 	Param,
-	Delete,
-	UseInterceptors,
-	ClassSerializerInterceptor
+	ParseIntPipe,
+	Post,
+	UseInterceptors
 } from '@nestjs/common';
-import { OrderService } from './services/order.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { User } from 'app/auth/entities/user.entity';
 import { SWAGGER } from 'configs/swagger';
-import { ApiCreateOrder, ApiGetListOrder, ApiGetDetailOrder, ApiUpdateOrder, ApiRemoveOrder } from './order.swagger';
+import { CurrentUser } from 'decorators/current-user.decorator';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { OrderService } from './services/order.service';
 
 @Controller('order')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -23,32 +22,23 @@ export class OrderController {
 	constructor(private readonly orderService: OrderService) {}
 
 	@Post()
-	@ApiCreateOrder()
-	create(@Body() createOrderDto: CreateOrderDto) {
-		return this.orderService.create(createOrderDto);
+	create(@CurrentUser() user: User, @Body() body: CreateOrderDto) {
+		return this.orderService.create(user, body);
 	}
 
-	@Get()
-	@ApiGetListOrder()
-	findAll() {
-		return this.orderService.findAll();
+	@Get('my_order')
+	getMyListOrder(@CurrentUser() user: User) {
+		return this.orderService.find({ user_id: user.id });
 	}
 
-	@Get(':id')
-	@ApiGetDetailOrder()
-	findOne(@Param('id') id: string) {
-		return this.orderService.findOne(+id);
-	}
-
-	@Patch(':id')
-	@ApiUpdateOrder()
-	update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-		return this.orderService.update(+id, updateOrderDto);
-	}
-
-	@Delete(':id')
-	@ApiRemoveOrder()
-	remove(@Param('id') id: string) {
-		return this.orderService.remove(+id);
+	@Get('my_order/:id')
+	getMyOrderDetail(
+		@Param('id', ParseIntPipe) id: number,
+		@CurrentUser() user: User
+	) {
+		return this.orderService.findOneOrFail({
+			id,
+			user_id: user.id
+		});
 	}
 }

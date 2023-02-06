@@ -3,6 +3,7 @@ export const SWAGGER = {
 		AUTH: 'Auth',
 		CATEGORY: 'Category',
 		PRODUCT: 'Product',
-		ORDER: 'Order'
+		ORDER: 'Order',
+		METHOD: "Method"
 	}
 };

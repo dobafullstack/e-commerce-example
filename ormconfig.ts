@@ -20,6 +20,7 @@ const ormConfig: DataSourceOptions = {
 	username: TYPEORM_USERNAME,
 	password: TYPEORM_PASSWORD,
 	database: TYPEORM_DATABASE_NAME,
+	logging: NODE_ENV === "development",
 	synchronize: NODE_ENV !== 'production',
 	entities: [join(__dirname, 'src', 'app', '**', 'entities', '*.entity.{js,ts}')],
 	migrations: [join(__dirname, 'src', 'database', 'migrations', '*.{js,ts}')],

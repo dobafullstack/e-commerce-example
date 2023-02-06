@@ -71,10 +71,8 @@ export class ProductService {
 				categories.push(category_sub);
 			}
 
-			await manager.save({
-				id: newProduct.id,
-				images,
-				stocks,
+			await manager.save(Product, {
+				...newProduct,
 				categories
 			});
 		});

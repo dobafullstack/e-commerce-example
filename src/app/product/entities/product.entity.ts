@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CategorySub } from 'app/category/entities/category-sub.entity';
+import { OrderDetail } from 'app/order/entities/order-detail.entity';
 import { Transform } from 'class-transformer';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { IEntity } from 'types/IEntity';
@@ -42,4 +43,7 @@ export class Product extends IEntity {
 		}
 	})
 	categories!: CategorySub[];
+
+	@OneToMany(() => OrderDetail, order_detail => order_detail.product)
+	order_detail!: OrderDetail
 }

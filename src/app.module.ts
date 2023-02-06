@@ -13,6 +13,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { RoleGuard } from 'guards/role.guard';
 import { CategoryController } from 'app/category/category.controller';
 import { AuthMiddleware } from 'middlewares/auth.middleware';
+import { MethodModule } from './app/method/method.module';
+import { ProductController } from 'app/product/product.controller';
+import { OrderController } from 'app/order/order.controller';
+import { MethodController } from 'app/method/method.controller';
 
 @Module({
 	imports: [
@@ -20,7 +24,8 @@ import { AuthMiddleware } from 'middlewares/auth.middleware';
 		AuthModule,
 		CategoryModule,
 		ProductModule,
-		OrderModule
+		OrderModule,
+		MethodModule
 	],
 	controllers: [],
 	providers: [
@@ -42,8 +47,21 @@ export class AppModule implements NestModule {
 				{
 					path: '/api/category/:id',
 					method: RequestMethod.GET
+				},
+				{
+					path: '/api/product',
+					method: RequestMethod.GET
+				},
+				{
+					path: '/api/product/:id',
+					method: RequestMethod.GET
 				}
 			)
-			.forRoutes(CategoryController);
+			.forRoutes(
+				CategoryController,
+				ProductController,
+				OrderController,
+				MethodController
+			);
 	}
 }

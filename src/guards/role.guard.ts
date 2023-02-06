@@ -35,6 +35,8 @@ export class RoleGuard implements CanActivate {
 					message: "You don't have permission"
 				}
 			]);
+		} else {
+			return true;
 		}
 	}
 }

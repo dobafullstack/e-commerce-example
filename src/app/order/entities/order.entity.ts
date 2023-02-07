@@ -1,3 +1,4 @@
+import { ApiHideProperty } from '@nestjs/swagger';
 import { User } from 'app/auth/entities/user.entity';
 import { Exclude } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
@@ -14,6 +15,7 @@ export class Order extends IEntity {
 
 	@Column()
 	@Exclude()
+	@ApiHideProperty()
 	order_payment_id!: number;
 
 	@OneToOne(() => OrderPayment)
@@ -22,6 +24,7 @@ export class Order extends IEntity {
 
 	@Column()
 	@Exclude()
+	@ApiHideProperty()
 	order_delivery_id!: number;
 
 	@OneToOne(() => OrderDelivery)
@@ -30,6 +33,7 @@ export class Order extends IEntity {
 
 	@Column()
 	@Exclude()
+	@ApiHideProperty()
 	user_id!: number;
 
 	@ManyToOne(() => User, user => user.orders)

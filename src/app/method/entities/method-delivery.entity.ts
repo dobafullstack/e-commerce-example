@@ -1,3 +1,4 @@
+import { ApiHideProperty } from '@nestjs/swagger';
 import { OrderDelivery } from 'app/order/entities/order-delivery.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { IEntity } from 'types/IEntity';
@@ -11,5 +12,6 @@ export class MethodDelivery extends IEntity {
 	fee!: number;
 
 	@OneToMany(() => OrderDelivery, order_delivery => order_delivery.method)
+	@ApiHideProperty()
 	order_delivery!: OrderDelivery[]
 }

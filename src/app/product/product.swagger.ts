@@ -1,10 +1,17 @@
 import { applyDecorators } from '@nestjs/common';
 import {
+	ApiBearerAuth,
 	ApiCreatedResponse,
 	ApiOkResponse,
+	ApiOperation,
 	getSchemaPath
 } from '@nestjs/swagger';
-import { ApiConflict, ApiNotFound } from 'swaggers/response.swagger';
+import {
+	ApiConflict,
+	ApiForbidden,
+	ApiNotFound,
+	ApiUnauthorized
+} from 'swaggers/response.swagger';
 import { Pagination } from 'types/Pagination';
 import { ProductImage } from './entities/product-image.entity';
 import { ProductStock } from './entities/product-stock.entity';
@@ -12,8 +19,12 @@ import { Product } from './entities/product.entity';
 
 export const ApiCreateProduct = () =>
 	applyDecorators(
+		ApiOperation({summary: "Create a new product"}),
 		ApiConflict(),
 		ApiNotFound(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiCreatedResponse({
 			schema: {
 				properties: {
@@ -29,6 +40,7 @@ export const ApiCreateProduct = () =>
 
 export const ApiGetListProduct = () =>
 	applyDecorators(
+		ApiOperation({summary: "Get a list of product"}),
 		ApiOkResponse({
 			schema: {
 				properties: {
@@ -50,6 +62,7 @@ export const ApiGetListProduct = () =>
 
 export const ApiGetDetailProduct = () =>
 	applyDecorators(
+		ApiOperation({summary: "Get detail a product"}),
 		ApiNotFound(),
 		ApiOkResponse({
 			schema: {
@@ -68,8 +81,12 @@ export const ApiGetDetailProduct = () =>
 
 export const ApiUpdateProduct = () =>
 	applyDecorators(
+		ApiOperation({summary: "Update a product"}),
 		ApiNotFound(),
 		ApiConflict(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiOkResponse({
 			schema: {
 				properties: {
@@ -87,7 +104,11 @@ export const ApiUpdateProduct = () =>
 
 export const ApiRemoveProduct = () =>
 	applyDecorators(
+		ApiOperation({summary: "Remove a product"}),
 		ApiNotFound(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiOkResponse({
 			schema: {
 				properties: {
@@ -105,6 +126,10 @@ export const ApiRemoveProduct = () =>
 
 export const ApiCreateProductImage = () =>
 	applyDecorators(
+		ApiOperation({summary: "Add image for a product"}),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiCreatedResponse({
 			schema: {
 				properties: {
@@ -120,7 +145,11 @@ export const ApiCreateProductImage = () =>
 
 export const ApiUpdateProductImage = () =>
 	applyDecorators(
+		ApiOperation({summary: "Update an image of product"}),
 		ApiNotFound(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiOkResponse({
 			schema: {
 				properties: {
@@ -136,7 +165,11 @@ export const ApiUpdateProductImage = () =>
 
 export const ApiRemoveProductImage = () =>
 	applyDecorators(
+		ApiOperation({summary: "Remove an image from product"}),
 		ApiNotFound(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiOkResponse({
 			schema: {
 				properties: {
@@ -152,6 +185,10 @@ export const ApiRemoveProductImage = () =>
 
 export const ApiCreateProductStock = () =>
 	applyDecorators(
+		ApiOperation({summary: "Create a stock for product"}),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiCreatedResponse({
 			schema: {
 				properties: {
@@ -167,7 +204,11 @@ export const ApiCreateProductStock = () =>
 
 export const ApiUpdateProductStock = () =>
 	applyDecorators(
+		ApiOperation({summary: "Update stock for a product"}),
 		ApiNotFound(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiOkResponse({
 			schema: {
 				properties: {
@@ -183,7 +224,11 @@ export const ApiUpdateProductStock = () =>
 
 export const ApiRemoveProductStock = () =>
 	applyDecorators(
+		ApiOperation({summary: "Remove a stock from product"}),
 		ApiNotFound(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
 		ApiOkResponse({
 			schema: {
 				properties: {
@@ -197,32 +242,42 @@ export const ApiRemoveProductStock = () =>
 		})
 	);
 
-export const ApiCreateProductCategory = () => applyDecorators(
-	ApiNotFound(),
-	ApiOkResponse({
-		schema: {
-			properties: {
-				code: { example: 200 },
-				success: { example: true },
-				message: { example: 'SUCCESS' },
-				errors: { example: [] },
-				data: { $ref: getSchemaPath(Product) }
+export const ApiCreateProductCategory = () =>
+	applyDecorators(
+		ApiOperation({summary: "Add a category for product"}),
+		ApiNotFound(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(Product) }
+				}
 			}
-		}
-	})
-);
+		})
+	);
 
-export const ApiRemoveProductCategory = () => applyDecorators(
-	ApiNotFound(),
-	ApiOkResponse({
-		schema: {
-			properties: {
-				code: { example: 200 },
-				success: { example: true },
-				message: { example: 'SUCCESS' },
-				errors: { example: [] },
-				data: { $ref: getSchemaPath(Product) }
+export const ApiRemoveProductCategory = () =>
+	applyDecorators(
+		ApiOperation({summary: "Remove a category from product"}),
+		ApiNotFound(),
+		ApiUnauthorized(),
+		ApiForbidden(),
+		ApiBearerAuth(),
+		ApiOkResponse({
+			schema: {
+				properties: {
+					code: { example: 200 },
+					success: { example: true },
+					message: { example: 'SUCCESS' },
+					errors: { example: [] },
+					data: { $ref: getSchemaPath(Product) }
+				}
 			}
-		}
-	})
-);
+		})
+	);

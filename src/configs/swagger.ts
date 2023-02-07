@@ -4,6 +4,10 @@ export const SWAGGER = {
 		CATEGORY: 'Category',
 		PRODUCT: 'Product',
 		ORDER: 'Order',
-		METHOD: "Method"
-	}
+		METHOD: 'Method'
+	},
+	TITLE: 'E-commerce example',
+	DESCRIPTION: 'The E-commerce API description',
+	VERSION: '1.0',
+	PATH: 'docs'
 };

@@ -39,6 +39,8 @@ import { UpdateProductImageDto } from './dto/update-product-image.dto';
 import { CreateProductStockDto } from './dto/create-product-stock.dto';
 import { UpdateProductStockDto } from './dto/update-product-stock.dto';
 import { ProductCategoryDto } from './dto/add-product-category.dto';
+import { UseRole } from 'decorators/role.decorator';
+import { Roles } from 'types/Roles';
 
 @Controller('product')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -51,6 +53,7 @@ export class ProductController {
 	) {}
 
 	@Post()
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiCreateProduct()
 	create(@Body() body: CreateProductDto) {
 		return this.productService.create(body);
@@ -69,6 +72,7 @@ export class ProductController {
 	}
 
 	@Patch(':id')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiUpdateProduct()
 	update(
 		@Param('id', ParseIntPipe) id: number,
@@ -78,12 +82,14 @@ export class ProductController {
 	}
 
 	@Delete(':id')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiRemoveProduct()
 	remove(@Param('id', ParseIntPipe) id: number) {
 		return this.productService.remove(id);
 	}
 
 	@Post('image/:product_id')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiCreateProductImage()
 	createImage(
 		@Param('product_id', ParseIntPipe) product_id: number,
@@ -92,6 +98,7 @@ export class ProductController {
 		return this.productImageService.create(product_id, body);
 	}
 	@Patch('image/:id')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiUpdateProductImage()
 	updateImage(
 		@Param('id', ParseIntPipe) id: number,
@@ -100,12 +107,14 @@ export class ProductController {
 		return this.productImageService.update(id, body);
 	}
 	@Delete('image/:id')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiRemoveProductImage()
 	removeImage(@Param('id', ParseIntPipe) id: number) {
 		return this.productImageService.remove(id);
 	}
 
 	@Post('stock')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiCreateProductStock()
 	createStock(
 		@Param('product_id', ParseIntPipe) product_id: number,
@@ -114,6 +123,7 @@ export class ProductController {
 		return this.productStockService.create(product_id, body);
 	}
 	@Patch('stock/:id')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiUpdateProductStock()
 	updateStock(
 		@Param('id', ParseIntPipe) id: number,
@@ -122,17 +132,20 @@ export class ProductController {
 		return this.productStockService.update(id, body);
 	}
 	@Delete('stock/:id')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiRemoveProductStock()
 	removeStock(@Param('id', ParseIntPipe) id: number) {
 		return this.productStockService.remove(+id);
 	}
 
 	@Post('category')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiCreateProductCategory()
 	addCategory(@Body() body: ProductCategoryDto) {
 		return this.productService.addCategory(body);
 	}
 	@Delete('category')
+	@UseRole(Roles.ADMIN, Roles.STAFF)
 	@ApiRemoveProductCategory()
 	removeCategory(@Body() body: ProductCategoryDto) {
 		return this.productService.removeCategory(body);

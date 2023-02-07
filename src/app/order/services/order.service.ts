@@ -1,5 +1,9 @@
 import { OrderDetail } from './../entities/order-detail.entity';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	Injectable,
+	MethodNotAllowedException,
+	NotFoundException
+} from '@nestjs/common';
 import { MethodDeliveryService } from 'app/method/services/method-delivery.service';
 import { MethodPaymentService } from 'app/method/services/method-payment.service';
 import { Product } from 'app/product/entities/product.entity';
@@ -12,6 +16,11 @@ import { OrderPayment } from '../entities/order-payment.entity';
 import { OrderDelivery } from '../entities/order-delivery.entity';
 import { EntityManager, FindOptionsWhere } from 'typeorm';
 import { ProductStockService } from 'app/product/services/product-stock.service';
+import { OrderPaymentService } from './order-payment.service';
+import { OrderDeliveryService } from './order-delivery.service';
+import { OrderDetailService } from './order-detail.service';
+import { OrderStatus } from 'types/Order';
+import { UpdateOrderDto } from '../dto/update-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -19,7 +28,10 @@ export class OrderService {
 		private readonly productService: ProductService,
 		private readonly productStockService: ProductStockService,
 		private readonly methodPaymentService: MethodPaymentService,
-		private readonly methodDeliveryService: MethodDeliveryService
+		private readonly methodDeliveryService: MethodDeliveryService,
+		private readonly orderPaymentService: OrderPaymentService,
+		private readonly orderDeliveryService: OrderDeliveryService,
+		private readonly orderDetailService: OrderDetailService
 	) {}
 
 	async create(user: User, input: CreateOrderDto) {
@@ -62,50 +74,56 @@ export class OrderService {
 			});
 		}
 
-		const order = await dataSource.transaction(async (manager) => {
+		const order: Order = await dataSource.transaction(async (manager) => {
 			//Create order payment
-			const order_payment = await manager.save(
-				OrderPayment.create({
+			const order_payment = await this.orderPaymentService.create(
+				{
 					method_payment_id: method_payment.id,
 					amount
-				})
+				},
+				manager
 			);
 
 			//Create order delivery
-			const order_delivery = await manager.save(
-				OrderDelivery.create({
+			const order_delivery = await this.orderDeliveryService.create(
+				{
 					method_delivery_id: method_delivery.id,
 					address,
 					ward,
 					district,
 					city
-				})
+				},
+				manager
 			);
 
-			const order = await manager.save(
+			const new_order = await manager.save(
 				Order.create({
-					user_id: user.id,
-					order_payment_id: order_payment.id,
-					order_delivery_id: order_delivery.id
+					user,
+					payment: order_payment,
+					delivery: order_delivery
 				})
 			);
 
 			//Create order detail
+			const orders_detail: OrderDetail[] = [];
 			for (let i = 0; i < order_products.length; i++) {
 				const { product, quantity, option_name } = order_products[i];
 
-				await manager.save(
-					OrderDetail.create({
-						order_id: order.id,
+				const order_detail = await this.orderDetailService.create(
+					{
+						order_id: new_order.id,
 						product_id: product.id,
 						price: product.price,
 						quantity,
 						option_name
-					})
+					},
+					manager
 				);
+
+				orders_detail.push(order_detail);
 			}
 
-			return order;
+			return new_order;
 		});
 
 		return order;
@@ -121,12 +139,24 @@ export class OrderService {
 			if (manager) {
 				order = await manager.findOneOrFail(Order, {
 					where,
-					relations: ['orders_detail', 'payment', 'delivery', 'user']
+					relations: [
+						'orders_detail',
+						'orders_detail.product',
+						'payment',
+						'delivery',
+						'user'
+					]
 				});
 			} else {
 				order = await Order.findOneOrFail({
 					where,
-					relations: ['orders_detail', 'payment', 'delivery', 'user']
+					relations: [
+						'orders_detail',
+						'orders_detail.product',
+						'payment',
+						'delivery',
+						'user'
+					]
 				});
 			}
 
@@ -148,5 +178,63 @@ export class OrderService {
 			where,
 			relations: ['user', 'payment', 'delivery', 'orders_detail']
 		});
+	}
+
+	async update(order_id: number, input: UpdateOrderDto) {
+		const { status } = input;
+
+		const { order_delivery_id, order_payment_id } = await this.findOneOrFail({
+			id: order_id
+		});
+
+		if (status === OrderStatus.CANCELED) {
+			await this.orderDeliveryService.removeById(order_delivery_id);
+			await this.orderPaymentService.removeById(order_payment_id);
+			await this.orderDetailService.removeByOrderId(order_id);
+		}
+
+		if (status === OrderStatus.SUCCESS) {
+			const order_delivery = await this.orderDeliveryService.findOneOrFail({
+				id: order_delivery_id
+			});
+
+			if (!order_delivery.status) {
+				throw new MethodNotAllowedException([
+					{
+						field: 'order_delivery',
+						message: 'Order delivery status was not success'
+					}
+				]);
+			}
+
+			const order_payment = await this.orderPaymentService.findOneOrFail({
+				id: order_payment_id
+			});
+
+			if (!order_payment.status) {
+				throw new MethodNotAllowedException([
+					{
+						field: 'order_payment',
+						message: 'Order payment status was not success'
+					}
+				]);
+			}
+		}
+
+		await Order.update({ id: order_id }, { status });
+
+		return this.findOneOrFail({ id: order_id });
+	}
+
+	async updateOrderPayment(order_id: number) {
+		const order = await this.findOneOrFail({ id: order_id });
+
+		return this.orderPaymentService.update(order.order_payment_id);
+	}
+
+	async updateOrderDelivery(order_id: number) {
+		const order = await this.findOneOrFail({ id: order_id });
+
+		return this.orderDeliveryService.update(order.order_delivery_id);
 	}
 }

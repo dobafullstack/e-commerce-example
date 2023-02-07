@@ -1,9 +1,9 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { User } from 'app/auth/entities/user.entity';
+import { User } from '../../auth/entities/user.entity';
 import { Exclude } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { IEntity } from 'types/IEntity';
-import { OrderStatus } from 'types/Order';
+import { IEntity } from '../../../types/IEntity';
+import { OrderStatus } from '../../../types/Order';
 import { OrderDelivery } from './order-delivery.entity';
 import { OrderDetail } from './order-detail.entity';
 import { OrderPayment } from './order-payment.entity';

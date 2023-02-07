@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { IEntity } from 'types/IEntity';
+import { IEntity } from '../../../types/IEntity';
 import { Product } from './product.entity';
 
 @Entity({ name: 'products_image' })

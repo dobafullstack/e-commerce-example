@@ -1,8 +1,8 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { Product } from 'app/product/entities/product.entity';
 import { Exclude } from 'class-transformer';
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
-import { IEntity } from 'types/IEntity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { IEntity } from '../../../types/IEntity';
+import { Product } from '../../product/entities/product.entity';
 import { Order } from './order.entity';
 
 @Entity({ name: 'orders_detail' })

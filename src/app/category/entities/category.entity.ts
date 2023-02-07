@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from 'typeorm';
-import { IEntity } from 'types/IEntity';
+import { IEntity } from '../../../types/IEntity';
 import { CategorySub } from './category-sub.entity';
 
 @Entity({ name: 'categories' })

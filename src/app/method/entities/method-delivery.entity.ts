@@ -1,7 +1,7 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { OrderDelivery } from 'app/order/entities/order-delivery.entity';
+import { OrderDelivery } from '../../order/entities/order-delivery.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { IEntity } from 'types/IEntity';
+import { IEntity } from '../../../types/IEntity';
 
 @Entity({ name: 'methods_delivery' })
 export class MethodDelivery extends IEntity {

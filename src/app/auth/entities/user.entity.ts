@@ -1,7 +1,14 @@
-import { Order } from 'app/order/entities/order.entity';
+import { Order } from '../../order/entities/order.entity';
 import * as argon2 from 'argon2';
 import { Exclude, Transform } from 'class-transformer';
-import { BeforeInsert, Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import {
+	BeforeInsert,
+	Column,
+	Entity,
+	JoinTable,
+	ManyToMany,
+	OneToMany
+} from 'typeorm';
 import { IEntity } from '../../../types/IEntity';
 import { Role } from './role.entity';
 
@@ -32,8 +39,8 @@ export class User extends IEntity {
 	@Transform(({ value }) => value.map((item) => item.name))
 	roles!: Role[];
 
-	@OneToMany(() => Order, order => order.user)
-	orders!: Order[]
+	@OneToMany(() => Order, (order) => order.user)
+	orders!: Order[];
 
 	@BeforeInsert()
 	async hashPassword() {

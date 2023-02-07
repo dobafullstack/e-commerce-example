@@ -26,9 +26,9 @@
     "migration:up:prod": "NODE_ENV=production npm run typeorm migration:run",
     "migration:up:dev": "NODE_ENV=development npm run typeorm migration:run",
     "migration:up:test": "NODE_ENV=test npm run typeorm migration:run",
-    "migration:down:prod": "NODE_ENV=production npm run typeorm migration:revert",
-    "migration:down:dev": "NODE_ENV=development npm run typeorm migration:revert",
-    "migration:down:test": "NODE_ENV=test npm run typeorm migration:revert",
+    "migration:down:prod": "NODE_ENV=production npm run typeorm migration:down",
+    "migration:down:dev": "NODE_ENV=development npm run typeorm migration:down",
+    "migration:down:test": "NODE_ENV=test npm run typeorm migration:down",
     "migration:create": "typeorm-ts-node-commonjs migration:create ./src/database/migrations/${npm_config_name}"
   },
   "dependencies": {

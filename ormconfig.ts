@@ -15,11 +15,11 @@ import {
 
 const ormConfig: DataSourceOptions = {
 	type: 'mysql',
-	host: process.env.TYPEORM_HOST,
-	port: 3306,
-	username: process.env.TYPEORM_USERNAME,
-	password: process.env.TYPEORM_PASSWORD,
-	database: process.env.TYPEORM_DATABASE_NAME,
+	host: TYPEORM_HOST as string,
+	port: +TYPEORM_PORT as number,
+	username: TYPEORM_USERNAME as string,
+	password: TYPEORM_PASSWORD as string,
+	database: TYPEORM_DATABASE_NAME as string,
 	logging: NODE_ENV === "development",
 	synchronize: NODE_ENV !== 'production',
 	entities: [join(__dirname, 'src', 'app', '**', 'entities', '*.entity.{js,ts}')],
